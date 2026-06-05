@@ -1,11 +1,11 @@
 {
-  "name": "MusicTeacher.WebAssembly",
-  "short_name": "MusicTeacher.WebAssembly",
+  "name": "MusicTeacher",
+  "short_name": "MusicTeacher",
   "id": "./",
   "start_url": "./",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#03173d",
+  "background_color": "#fff9ea",
+  "theme_color": "#17212b",
   "prefer_related_applications": false,
   "icons": [
     {

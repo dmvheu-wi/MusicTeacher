@@ -1,0 +1,70 @@
+@using MusicTeacher.Shared.MusicTheory
+
+<svg class="music-staff" viewBox="0 0 420 210" role="img" aria-label="@AriaLabel">
+    <rect class="staff-paper" x="0" y="0" width="420" height="210" rx="8" />
+
+    @for (var line = 0; line < 5; line++)
+    {
+        var y = StaffLineY(line);
+        <line class="staff-line" x1="52" y1="@y" x2="382" y2="@y" />
+    }
+
+    <text class="treble-clef" x="74" y="151">&#119070;</text>
+
+    @if (IsPlacementMode)
+    {
+        foreach (var step in SelectableSteps)
+        {
+            var y = StepToY(step);
+            var targetClass = SelectedStep == step ? "staff-target is-selected" : "staff-target";
+
+            <g class="staff-hit-button" role="button" tabindex="0" @onclick="() => SelectStep(step)" aria-label="@GetStepLabel(step)">
+                <circle class="@targetClass" cx="255" cy="@y" r="11" />
+            </g>
+        }
+    }
+
+    @if (DisplayedPitch is not null)
+    {
+        var noteY = StepToY(TrebleClef.GetStaffStep(DisplayedPitch.Value));
+        var noteTransform = $"rotate(-18 255 {noteY})";
+        <ellipse class="note-head" cx="255" cy="@noteY" rx="15" ry="10" transform="@noteTransform" />
+        <line class="note-stem" x1="268" y1="@noteY" x2="268" y2="@(noteY - 62)" />
+    }
+</svg>
+
+@code {
+    private const double BottomLineY = 154;
+    private const double LineGap = 24;
+
+    [Parameter]
+    public Pitch? DisplayedPitch { get; set; }
+
+    [Parameter]
+    public bool IsPlacementMode { get; set; }
+
+    [Parameter]
+    public IReadOnlyList<int> SelectableSteps { get; set; } = [];
+
+    [Parameter]
+    public int? SelectedStep { get; set; }
+
+    [Parameter]
+    public EventCallback<int> OnStepSelected { get; set; }
+
+    private string AriaLabel => DisplayedPitch is null
+        ? "Treble staff for placing a note"
+        : $"Treble staff showing {DisplayedPitch.Value.FixedDoName}";
+
+    private static double StaffLineY(int lineFromTop) => BottomLineY - (4 - lineFromTop) * LineGap;
+
+    private static double StepToY(int staffStep) => BottomLineY - staffStep * (LineGap / 2);
+
+    private async Task SelectStep(int step) => await OnStepSelected.InvokeAsync(step);
+
+    private static string GetStepLabel(int step)
+    {
+        var pitch = TrebleClef.GetPitchFromStaffStep(step);
+        return $"Place note on {pitch.FixedDoName}";
+    }
+}

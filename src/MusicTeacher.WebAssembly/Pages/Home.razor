@@ -1,7 +1,167 @@
-﻿@page "/"
+@page "/"
+@using MusicTeacher.Shared.Lessons
+@using MusicTeacher.Shared.MusicTheory
+@using MusicTeacher.Shared.Progress
+@inject HttpClient Http
+@inject IProgressStore ProgressStore
 
-<PageTitle>Home</PageTitle>
+<PageTitle>MusicTeacher</PageTitle>
 
-<h1>Hello, world!</h1>
+<section class="practice-stage">
+    <div class="lesson-panel">
+        <div class="lesson-kicker">Treble clef</div>
+        <h1>@(lesson?.Title ?? "Treble Clef Start")</h1>
 
-Welcome to your new app.
+        <div class="mode-switch" role="tablist" aria-label="Drill mode">
+            <button class="@GetModeClass(DrillMode.NameNote)" type="button" @onclick="() => SetMode(DrillMode.NameNote)">
+                Name
+            </button>
+            <button class="@GetModeClass(DrillMode.PlaceNote)" type="button" @onclick="() => SetMode(DrillMode.PlaceNote)">
+                Place
+            </button>
+        </div>
+
+        <div class="score-strip" aria-live="polite">
+            <span>@progress.CorrectAnswers correct</span>
+            <span>@progress.Attempts tries</span>
+            <span>@progress.Streak streak</span>
+        </div>
+    </div>
+
+    <div class="exercise-board">
+        <div class="prompt-row">
+            <div>
+                <p class="prompt-label">@CurrentDrillTitle</p>
+                <h2>@PromptText</h2>
+            </div>
+            <button class="next-button" type="button" @onclick="NextRound" aria-label="Next note">Next</button>
+        </div>
+
+        <MusicStaff DisplayedPitch="@DisplayedPitch"
+                    IsPlacementMode="@IsPlacementMode"
+                    SelectableSteps="@selectableSteps"
+                    SelectedStep="@selectedStep"
+                    OnStepSelected="SelectStaffStep" />
+
+        @if (mode == DrillMode.NameNote)
+        {
+            <div class="answer-grid" aria-label="Note name choices">
+                @foreach (var letter in noteLetters)
+                {
+                    <button type="button" class="answer-button" @onclick="() => ChooseName(letter)">
+                        <span>@GetFixedDoName(letter)</span>
+                        <small>@letter</small>
+                    </button>
+                }
+            </div>
+        }
+
+        <div class="@feedbackClass" aria-live="polite">@feedbackText</div>
+    </div>
+</section>
+
+@code {
+    private static readonly IReadOnlyList<NoteLetter> noteLetters =
+    [
+        NoteLetter.C,
+        NoteLetter.D,
+        NoteLetter.E,
+        NoteLetter.F,
+        NoteLetter.G,
+        NoteLetter.A,
+        NoteLetter.B
+    ];
+
+    private readonly IReadOnlyList<Pitch> notes = TrebleClef.BeginnerStaffNotes;
+    private readonly IReadOnlyList<int> selectableSteps = TrebleClef.BeginnerStaffNotes
+        .Select(TrebleClef.GetStaffStep)
+        .ToArray();
+
+    private LessonDefinition? lesson;
+    private LearningProgress progress = LearningProgress.Empty("treble-clef-start");
+    private DrillMode mode = DrillMode.NameNote;
+    private Pitch currentPitch = TrebleClef.BeginnerStaffNotes[0];
+    private int? selectedStep;
+    private string feedbackText = "Ready";
+    private string feedbackClass = "feedback";
+    private int roundIndex;
+
+    private bool IsPlacementMode => mode == DrillMode.PlaceNote;
+
+    private Pitch? DisplayedPitch => mode == DrillMode.NameNote
+        ? currentPitch
+        : selectedStep is null ? null : TrebleClef.GetPitchFromStaffStep(selectedStep.Value);
+
+    private string CurrentDrillTitle => mode == DrillMode.NameNote
+        ? "Name the note"
+        : "Place the note";
+
+    private string PromptText => mode == DrillMode.NameNote
+        ? "Which name matches this note?"
+        : $"Put {currentPitch.FixedDoName} on the staff";
+
+    protected override async Task OnInitializedAsync()
+    {
+        lesson = await Http.GetFromJsonAsync<LessonDefinition>("content/lessons/treble-clef-start.json");
+        progress = await ProgressStore.LoadAsync("treble-clef-start");
+        NextRound();
+    }
+
+    private void SetMode(DrillMode nextMode)
+    {
+        mode = nextMode;
+        NextRound();
+    }
+
+    private async Task ChooseName(NoteLetter letter)
+    {
+        await RecordAnswer(letter == currentPitch.Letter);
+    }
+
+    private async Task SelectStaffStep(int step)
+    {
+        selectedStep = step;
+        await RecordAnswer(step == TrebleClef.GetStaffStep(currentPitch));
+    }
+
+    private async Task RecordAnswer(bool isCorrect)
+    {
+        progress = progress with
+        {
+            Attempts = progress.Attempts + 1,
+            CorrectAnswers = progress.CorrectAnswers + (isCorrect ? 1 : 0),
+            Streak = isCorrect ? progress.Streak + 1 : 0
+        };
+
+        feedbackText = isCorrect ? "That fits." : "Try the next one.";
+        feedbackClass = isCorrect ? "feedback is-correct" : "feedback is-missed";
+
+        await ProgressStore.SaveAsync(progress);
+
+        if (isCorrect)
+        {
+            NextRound();
+        }
+    }
+
+    private void NextRound()
+    {
+        roundIndex = (roundIndex + 3) % notes.Count;
+        currentPitch = notes[roundIndex];
+        selectedStep = null;
+        feedbackText = mode == DrillMode.NameNote ? "Pick a name." : "Pick a line or space.";
+        feedbackClass = "feedback";
+    }
+
+    private string GetModeClass(DrillMode drillMode)
+        => mode == drillMode ? "mode-button is-active" : "mode-button";
+
+    private static string GetFixedDoName(NoteLetter letter)
+        => new Pitch(letter, 4).FixedDoName;
+
+    private enum DrillMode
+    {
+        NameNote,
+        PlaceNote
+    }
+}
