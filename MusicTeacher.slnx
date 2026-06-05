@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/MusicTeacher.Shared/MusicTeacher.Shared.csproj" />
+    <Project Path="src/MusicTeacher.WebAssembly/MusicTeacher.WebAssembly.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/MusicTeacher.Tests/MusicTeacher.Tests.csproj" />
+  </Folder>
+</Solution>
