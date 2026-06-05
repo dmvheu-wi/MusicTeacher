@@ -1,6 +1,6 @@
 @using MusicTeacher.Shared.MusicTheory
 
-<svg class="music-staff" viewBox="0 0 420 210" role="img" aria-label="@AriaLabel">
+<svg class="music-staff" viewBox="0 0 420 210" role="img" aria-label="@AriaLabel" data-pitch="@DisplayedPitch?.ScientificName">
     <rect class="staff-paper" x="0" y="0" width="420" height="210" rx="8" />
 
     @for (var line = 0; line < 5; line++)

@@ -48,7 +48,10 @@
             <div class="answer-grid" aria-label="Note name choices">
                 @foreach (var letter in noteLetters)
                 {
-                    <button type="button" class="answer-button" @onclick="() => ChooseName(letter)">
+                    <button type="button"
+                            class="answer-button"
+                            data-note-letter="@letter"
+                            @onclick="() => ChooseName(letter)">
                         <span>@GetFixedDoName(letter)</span>
                         <small>@letter</small>
                     </button>
@@ -83,7 +86,7 @@
     private int? selectedStep;
     private string feedbackText = "Ready";
     private string feedbackClass = "feedback";
-    private int roundIndex = -1;
+    private Pitch? previousPitch;
 
     private bool IsPlacementMode => mode == DrillMode.PlaceNote;
 
@@ -109,7 +112,7 @@
     private void SetMode(DrillMode nextMode)
     {
         mode = nextMode;
-        roundIndex = -1;
+        previousPitch = null;
         NextRound();
     }
 
@@ -147,11 +150,27 @@
     private void NextRound()
     {
         var notes = CurrentNotes;
-        roundIndex = (roundIndex + 1) % notes.Count;
-        currentPitch = notes[roundIndex];
+        currentPitch = PickRandomPitch(notes);
+        previousPitch = currentPitch;
         selectedStep = null;
         feedbackText = mode == DrillMode.NameNote ? "Pick a name." : "Pick a line or space.";
         feedbackClass = "feedback";
+    }
+
+    private Pitch PickRandomPitch(IReadOnlyList<Pitch> notes)
+    {
+        if (notes.Count == 0)
+        {
+            throw new InvalidOperationException("A drill needs at least one note.");
+        }
+
+        if (notes.Count == 1 || previousPitch is null)
+        {
+            return notes[Random.Shared.Next(notes.Count)];
+        }
+
+        var candidates = notes.Where(note => note != previousPitch.Value).ToArray();
+        return candidates[Random.Shared.Next(candidates.Length)];
     }
 
     private IReadOnlyList<Pitch> CurrentNotes => mode == DrillMode.NameNote
