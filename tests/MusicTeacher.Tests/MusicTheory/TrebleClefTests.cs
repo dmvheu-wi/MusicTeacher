@@ -18,6 +18,7 @@ public sealed class TrebleClefTests
     [InlineData(NoteLetter.F, 5, 8, "fa")]
     [InlineData(NoteLetter.G, 5, 9, "sol")]
     [InlineData(NoteLetter.A, 5, 10, "la")]
+    [InlineData(NoteLetter.B, 5, 11, "ti")]
     public void BeginnerNotesMapToTrebleStaffSteps(NoteLetter letter, int octave, int expectedStep, string expectedFixedDo)
     {
         var pitch = new Pitch(letter, octave);
@@ -38,17 +39,18 @@ public sealed class TrebleClefTests
     }
 
     [Fact]
-    public void BeginnerPlacementRangeRunsFromLowDoToHighDo()
+    public void BeginnerPlacementRangeMatchesReadingRange()
     {
         Assert.Equal(new Pitch(NoteLetter.C, 4), TrebleClef.BeginnerPlacementNotes[0]);
-        Assert.Equal(new Pitch(NoteLetter.C, 5), TrebleClef.BeginnerPlacementNotes[^1]);
+        Assert.Equal(new Pitch(NoteLetter.B, 5), TrebleClef.BeginnerPlacementNotes[^1]);
+        Assert.Equal(TrebleClef.BeginnerReadingNotes, TrebleClef.BeginnerPlacementNotes);
     }
 
     [Fact]
-    public void BeginnerReadingRangeRunsFromLowDoToHighLa()
+    public void BeginnerReadingRangeRunsFromLowDoToHighTi()
     {
         Assert.Equal(new Pitch(NoteLetter.C, 4), TrebleClef.BeginnerReadingNotes[0]);
-        Assert.Equal(new Pitch(NoteLetter.A, 5), TrebleClef.BeginnerReadingNotes[^1]);
+        Assert.Equal(new Pitch(NoteLetter.B, 5), TrebleClef.BeginnerReadingNotes[^1]);
     }
 
     [Theory]

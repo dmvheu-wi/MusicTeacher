@@ -16,20 +16,11 @@ public static class TrebleClef
         new(NoteLetter.E, 5),
         new(NoteLetter.F, 5),
         new(NoteLetter.G, 5),
-        new(NoteLetter.A, 5)
+        new(NoteLetter.A, 5),
+        new(NoteLetter.B, 5)
     ];
 
-    public static readonly IReadOnlyList<Pitch> BeginnerPlacementNotes =
-    [
-        new(NoteLetter.C, 4),
-        new(NoteLetter.D, 4),
-        new(NoteLetter.E, 4),
-        new(NoteLetter.F, 4),
-        new(NoteLetter.G, 4),
-        new(NoteLetter.A, 4),
-        new(NoteLetter.B, 4),
-        new(NoteLetter.C, 5)
-    ];
+    public static readonly IReadOnlyList<Pitch> BeginnerPlacementNotes = BeginnerReadingNotes;
 
     public static readonly IReadOnlyList<Pitch> BeginnerStaffNotes = BeginnerReadingNotes;
 
