@@ -9,10 +9,9 @@
             <button type="button"
                     class="@keyClass"
                     data-pitch="@pitch.ScientificName"
+                    aria-label="@GetPitchLabel(pitch)"
                     @onpointerenter="() => PreviewPitch(pitch)"
                     @onclick="() => SelectPitch(pitch)">
-                <span>@pitch.FixedDoName</span>
-                <small>@pitch.ScientificName.ToLowerInvariant()</small>
             </button>
         }
     </div>
@@ -21,6 +20,16 @@
         @foreach (var keyIndex in BlackKeyAfterIndexes)
         {
             <span class="piano-black-key" style="@GetBlackKeyStyle(keyIndex)"></span>
+        }
+    </div>
+
+    <div class="key-label-row" aria-hidden="true">
+        @foreach (var pitch in Pitches)
+        {
+            <span class="key-label">
+                <span>@pitch.FixedDoName</span>
+                <small>@pitch.ScientificName.ToLowerInvariant()</small>
+            </span>
         }
     </div>
 </div>
@@ -55,6 +64,8 @@
     private async Task PreviewPitch(Pitch pitch) => await OnPitchPreviewed.InvokeAsync(pitch);
 
     private async Task SelectPitch(Pitch pitch) => await OnPitchSelected.InvokeAsync(pitch);
+
+    private static string GetPitchLabel(Pitch pitch) => $"{pitch.FixedDoName} {pitch.ScientificName}";
 
     private string GetBlackKeyStyle(int whiteKeyIndex)
     {
