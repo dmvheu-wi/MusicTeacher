@@ -10,7 +10,7 @@
     }
 
     <line class="staff-barline" x1="52" y1="@StaffLineY(0)" x2="52" y2="@StaffLineY(4)" />
-    <text class="treble-clef" x="72" y="150">&#119070;</text>
+    <text class="treble-clef" x="78" y="@StaffCenterY">&#119070;</text>
 
     @if (IsPlacementMode)
     {
@@ -55,6 +55,7 @@
 @code {
     private const double BottomLineY = 154;
     private const double LineGap = 24;
+    private const double StaffCenterY = BottomLineY - LineGap * 2;
 
     [Parameter]
     public Pitch? DisplayedPitch { get; set; }
