@@ -23,7 +23,12 @@
                 <line class="ledger-line is-target" x1="225" y1="@y" x2="285" y2="@y" />
             }
 
-            <g class="staff-hit-button" role="button" tabindex="0" @onclick="() => SelectStep(step)" aria-label="@GetStepLabel(step)">
+            <g class="staff-hit-button"
+               role="button"
+               tabindex="0"
+               @onpointerenter="() => PreviewStep(step)"
+               @onclick="() => SelectStep(step)"
+               aria-label="@GetStepLabel(step)">
                 <circle class="@targetClass" cx="255" cy="@y" r="11" />
             </g>
         }
@@ -65,6 +70,9 @@
     [Parameter]
     public EventCallback<int> OnStepSelected { get; set; }
 
+    [Parameter]
+    public EventCallback<int> OnStepPreviewed { get; set; }
+
     private string AriaLabel => DisplayedPitch is null
         ? "Treble staff for placing a note"
         : $"Treble staff showing {DisplayedPitch.Value.FixedDoName}";
@@ -74,6 +82,8 @@
     private static double StepToY(int staffStep) => BottomLineY - staffStep * (LineGap / 2);
 
     private async Task SelectStep(int step) => await OnStepSelected.InvokeAsync(step);
+
+    private async Task PreviewStep(int step) => await OnStepPreviewed.InvokeAsync(step);
 
     private static bool NeedsLedgerLine(int staffStep)
         => (staffStep is < 0 or > 8) && staffStep % 2 == 0;

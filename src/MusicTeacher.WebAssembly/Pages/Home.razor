@@ -4,6 +4,7 @@
 @using MusicTeacher.Shared.Progress
 @inject HttpClient Http
 @inject IProgressStore ProgressStore
+@inject MusicAudioService Audio
 
 <PageTitle>MusicTeacher</PageTitle>
 
@@ -41,6 +42,7 @@
                     IsPlacementMode="@IsPlacementMode"
                     SelectableSteps="@selectableSteps"
                     SelectedStep="@selectedStep"
+                    OnStepPreviewed="PreviewStaffStep"
                     OnStepSelected="SelectStaffStep" />
 
         @if (mode == DrillMode.NameNote)
@@ -51,6 +53,7 @@
                     <button type="button"
                             class="answer-button"
                             data-note-letter="@letter"
+                            @onpointerenter="() => PreviewName(letter)"
                             @onclick="() => ChooseName(letter)">
                         <span>@GetFixedDoName(letter)</span>
                         <small>@letter</small>
@@ -118,13 +121,27 @@
 
     private async Task ChooseName(NoteLetter letter)
     {
-        await RecordAnswer(letter == currentPitch.Letter);
+        var isCorrect = letter == currentPitch.Letter;
+        await PlayClickCue(isCorrect, currentPitch);
+        await RecordAnswer(isCorrect);
+    }
+
+    private async Task PreviewName(NoteLetter letter)
+    {
+        await Audio.PlayNoteAsync(GetNearestAnswerPitch(letter));
+    }
+
+    private async Task PreviewStaffStep(int step)
+    {
+        await Audio.PlayNoteAsync(TrebleClef.GetPitchFromStaffStep(step));
     }
 
     private async Task SelectStaffStep(int step)
     {
         selectedStep = step;
-        await RecordAnswer(step == TrebleClef.GetStaffStep(currentPitch));
+        var isCorrect = step == TrebleClef.GetStaffStep(currentPitch);
+        await PlayClickCue(isCorrect, currentPitch);
+        await RecordAnswer(isCorrect);
     }
 
     private async Task RecordAnswer(bool isCorrect)
@@ -182,6 +199,26 @@
 
     private static string GetFixedDoName(NoteLetter letter)
         => new Pitch(letter, 4).FixedDoName;
+
+    private Pitch GetNearestAnswerPitch(NoteLetter letter)
+    {
+        var currentStep = TrebleClef.GetStaffStep(currentPitch);
+
+        return TrebleClef.BeginnerReadingNotes
+            .Where(pitch => pitch.Letter == letter)
+            .MinBy(pitch => Math.Abs(TrebleClef.GetStaffStep(pitch) - currentStep));
+    }
+
+    private async Task PlayClickCue(bool isCorrect, Pitch pitch)
+    {
+        if (isCorrect)
+        {
+            await Audio.PlayNoteAsync(pitch);
+            return;
+        }
+
+        await Audio.PlayBuzzerAsync();
+    }
 
     private static string GetPromptName(Pitch pitch)
         => pitch.Letter == NoteLetter.C && pitch.Octave == 4
