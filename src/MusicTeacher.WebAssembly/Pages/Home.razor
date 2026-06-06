@@ -51,6 +51,13 @@
                            OnPitchPreviewed="PreviewPitch"
                            OnPitchSelected="ChoosePitch" />
         }
+        else
+        {
+            <PianoKeyboard Pitches="@TrebleClef.BeginnerPlacementNotes"
+                           HighlightedPitch="@currentPitch"
+                           OnPitchPreviewed="PreviewPitch"
+                           OnPitchSelected="PreviewPitch" />
+        }
 
         <div class="@feedbackClass" aria-live="polite">@feedbackText</div>
     </div>

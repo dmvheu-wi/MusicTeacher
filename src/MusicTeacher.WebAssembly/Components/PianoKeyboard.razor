@@ -4,8 +4,10 @@
     <div class="white-key-row">
         @foreach (var pitch in Pitches)
         {
+            var keyClass = HighlightedPitch == pitch ? "piano-white-key is-highlighted" : "piano-white-key";
+
             <button type="button"
-                    class="piano-white-key"
+                    class="@keyClass"
                     data-pitch="@pitch.ScientificName"
                     @onpointerenter="() => PreviewPitch(pitch)"
                     @onclick="() => SelectPitch(pitch)">
@@ -40,6 +42,9 @@
 
     [Parameter]
     public IReadOnlyList<Pitch> Pitches { get; set; } = [];
+
+    [Parameter]
+    public Pitch? HighlightedPitch { get; set; }
 
     [Parameter]
     public EventCallback<Pitch> OnPitchPreviewed { get; set; }
