@@ -1,6 +1,7 @@
 @using MusicTeacher.Shared.MusicTheory
+@inject AppLocalizer Localizer
 
-<div class="piano-keyboard" role="group" aria-label="Two octave note keyboard">
+<div class="piano-keyboard" role="group" aria-label="@Localizer["KeyboardAriaLabel"]">
     <div class="white-key-row">
         @foreach (var pitch in Pitches)
         {

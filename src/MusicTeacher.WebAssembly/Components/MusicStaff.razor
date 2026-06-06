@@ -1,4 +1,5 @@
 @using MusicTeacher.Shared.MusicTheory
+@inject AppLocalizer Localizer
 
 <svg class="music-staff" viewBox="0 0 420 210" role="img" aria-label="@AriaLabel" data-pitch="@DisplayedPitch?.ScientificName">
     <rect class="staff-paper" x="0" y="0" width="420" height="210" rx="8" />
@@ -76,8 +77,8 @@
     public EventCallback<int> OnStepPreviewed { get; set; }
 
     private string AriaLabel => DisplayedPitch is null
-        ? "Treble staff for placing a note"
-        : $"Treble staff showing {DisplayedPitch.Value.FixedDoName}";
+        ? Localizer["StaffPlacementAriaLabel"]
+        : Localizer.Format("StaffShowingNoteAriaLabel", DisplayedPitch.Value.FixedDoName);
 
     private static double StaffLineY(int lineFromTop) => BottomLineY - (4 - lineFromTop) * LineGap;
 
@@ -109,9 +110,9 @@
         }
     }
 
-    private static string GetStepLabel(int step)
+    private string GetStepLabel(int step)
     {
         var pitch = TrebleClef.GetPitchFromStaffStep(step);
-        return $"Place note on {pitch.FixedDoName}";
+        return Localizer.Format("StaffPlaceNoteAriaLabel", pitch.FixedDoName);
     }
 }

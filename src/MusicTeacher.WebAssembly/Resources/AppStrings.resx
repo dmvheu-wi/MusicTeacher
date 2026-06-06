@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="AppTitle" xml:space="preserve">
+    <value>MusicTeacher</value>
+  </data>
+  <data name="TrebleClefKicker" xml:space="preserve">
+    <value>Treble clef</value>
+  </data>
+  <data name="TrebleClefStartTitle" xml:space="preserve">
+    <value>Treble Clef Start</value>
+  </data>
+  <data name="DrillModeLabel" xml:space="preserve">
+    <value>Drill mode</value>
+  </data>
+  <data name="NameMode" xml:space="preserve">
+    <value>Name</value>
+  </data>
+  <data name="PlaceMode" xml:space="preserve">
+    <value>Place</value>
+  </data>
+  <data name="ScoreCorrect" xml:space="preserve">
+    <value>{0} correct</value>
+  </data>
+  <data name="ScoreTries" xml:space="preserve">
+    <value>{0} tries</value>
+  </data>
+  <data name="ScoreStreak" xml:space="preserve">
+    <value>{0} streak</value>
+  </data>
+  <data name="NameTheNoteTitle" xml:space="preserve">
+    <value>Name the note</value>
+  </data>
+  <data name="PlaceTheNoteTitle" xml:space="preserve">
+    <value>Place the note</value>
+  </data>
+  <data name="NamePrompt" xml:space="preserve">
+    <value>Which name matches this note?</value>
+  </data>
+  <data name="PlacePrompt" xml:space="preserve">
+    <value>Put {0} on the staff</value>
+  </data>
+  <data name="NextNote" xml:space="preserve">
+    <value>Next note</value>
+  </data>
+  <data name="Next" xml:space="preserve">
+    <value>Next</value>
+  </data>
+  <data name="Ready" xml:space="preserve">
+    <value>Ready</value>
+  </data>
+  <data name="CorrectFeedback" xml:space="preserve">
+    <value>That fits.</value>
+  </data>
+  <data name="MissedFeedback" xml:space="preserve">
+    <value>Try the next one.</value>
+  </data>
+  <data name="PickNameFeedback" xml:space="preserve">
+    <value>Pick a name.</value>
+  </data>
+  <data name="PickStaffFeedback" xml:space="preserve">
+    <value>Pick a line or space.</value>
+  </data>
+  <data name="LowOctave" xml:space="preserve">
+    <value>low</value>
+  </data>
+  <data name="HighOctave" xml:space="preserve">
+    <value>high</value>
+  </data>
+  <data name="LanguageSelectorLabel" xml:space="preserve">
+    <value>Language</value>
+  </data>
+  <data name="LanguageEnglish" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="LanguageDutch" xml:space="preserve">
+    <value>Nederlands</value>
+  </data>
+  <data name="KeyboardAriaLabel" xml:space="preserve">
+    <value>Two octave note keyboard</value>
+  </data>
+  <data name="StaffPlacementAriaLabel" xml:space="preserve">
+    <value>Treble staff for placing a note</value>
+  </data>
+  <data name="StaffShowingNoteAriaLabel" xml:space="preserve">
+    <value>Treble staff showing {0}</value>
+  </data>
+  <data name="StaffPlaceNoteAriaLabel" xml:space="preserve">
+    <value>Place note on {0}</value>
+  </data>
+</root>

@@ -16,9 +16,11 @@ public partial class Home
     private DrillMode mode = DrillMode.NameNote;
     private Pitch currentPitch = TrebleClef.BeginnerReadingNotes[0];
     private int? selectedStep;
-    private string feedbackText = "Ready";
+    private string feedbackKey = "Ready";
     private string feedbackClass = "feedback";
     private Pitch? previousPitch;
+
+    private string FeedbackText => Localizer[feedbackKey];
 
     private bool IsPlacementMode => mode == DrillMode.PlaceNote;
 
@@ -27,12 +29,12 @@ public partial class Home
         : selectedStep is null ? null : TrebleClef.GetPitchFromStaffStep(selectedStep.Value);
 
     private string CurrentDrillTitle => mode == DrillMode.NameNote
-        ? "Name the note"
-        : "Place the note";
+        ? Localizer["NameTheNoteTitle"]
+        : Localizer["PlaceTheNoteTitle"];
 
     private string PromptText => mode == DrillMode.NameNote
-        ? "Which name matches this note?"
-        : $"Put {GetPromptName(currentPitch)} on the staff";
+        ? Localizer["NamePrompt"]
+        : Localizer.Format("PlacePrompt", GetPromptName(currentPitch));
 
     protected override async Task OnInitializedAsync()
     {
@@ -82,7 +84,7 @@ public partial class Home
             Streak = isCorrect ? progress.Streak + 1 : 0
         };
 
-        feedbackText = isCorrect ? "That fits." : "Try the next one.";
+        feedbackKey = isCorrect ? "CorrectFeedback" : "MissedFeedback";
         feedbackClass = isCorrect ? "feedback is-correct" : "feedback is-missed";
 
         await ProgressStore.SaveAsync(progress);
@@ -99,7 +101,7 @@ public partial class Home
         currentPitch = PickRandomPitch(notes);
         previousPitch = currentPitch;
         selectedStep = null;
-        feedbackText = mode == DrillMode.NameNote ? "Pick a name." : "Pick a line or space.";
+        feedbackKey = mode == DrillMode.NameNote ? "PickNameFeedback" : "PickStaffFeedback";
         feedbackClass = "feedback";
     }
 
@@ -126,6 +128,16 @@ public partial class Home
     private string GetModeClass(DrillMode drillMode)
         => mode == drillMode ? "mode-button is-active" : "mode-button";
 
+    private string GetCultureClass(string cultureName)
+        => string.Equals(Localizer.CurrentCulture.Name, cultureName, StringComparison.OrdinalIgnoreCase)
+            ? "language-button is-active"
+            : "language-button";
+
+    private async Task ChangeCulture(string cultureName)
+    {
+        await Localizer.SetCultureAsync(cultureName);
+    }
+
     private async Task PlayClickCue(bool isCorrect, Pitch pitch)
     {
         if (isCorrect)
@@ -137,8 +149,8 @@ public partial class Home
         await Audio.PlayBuzzerAsync();
     }
 
-    private static string GetPromptName(Pitch pitch)
-        => $"{(pitch.Octave == 4 ? "low" : "high")} {pitch.FixedDoName}";
+    private string GetPromptName(Pitch pitch)
+        => $"{(pitch.Octave == 4 ? Localizer["LowOctave"] : Localizer["HighOctave"])} {pitch.FixedDoName}";
 
     private enum DrillMode
     {

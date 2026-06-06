@@ -5,27 +5,39 @@
 @inject HttpClient Http
 @inject IProgressStore ProgressStore
 @inject MusicAudioService Audio
+@inject AppLocalizer Localizer
 
-<PageTitle>MusicTeacher</PageTitle>
+<PageTitle>@Localizer["AppTitle"]</PageTitle>
 
 <section class="practice-stage">
     <div class="lesson-panel">
-        <div class="lesson-kicker">Treble clef</div>
-        <h1>@(lesson?.Title ?? "Treble Clef Start")</h1>
+        <div class="lesson-kicker">@(lesson is null ? string.Empty : Localizer["TrebleClefKicker"])</div>
+        <h1>@Localizer["TrebleClefStartTitle"]</h1>
 
-        <div class="mode-switch" role="tablist" aria-label="Drill mode">
+        <div class="language-switcher" role="group" aria-label="@Localizer["LanguageSelectorLabel"]">
+            @foreach (var culture in AppLocalizer.SupportedCultures)
+            {
+                <button class="@GetCultureClass(culture.Name)"
+                        type="button"
+                        @onclick="() => ChangeCulture(culture.Name)">
+                    @Localizer.GetCultureDisplayName(culture)
+                </button>
+            }
+        </div>
+
+        <div class="mode-switch" role="tablist" aria-label="@Localizer["DrillModeLabel"]">
             <button class="@GetModeClass(DrillMode.NameNote)" type="button" @onclick="() => SetMode(DrillMode.NameNote)">
-                Name
+                @Localizer["NameMode"]
             </button>
             <button class="@GetModeClass(DrillMode.PlaceNote)" type="button" @onclick="() => SetMode(DrillMode.PlaceNote)">
-                Place
+                @Localizer["PlaceMode"]
             </button>
         </div>
 
         <div class="score-strip" aria-live="polite">
-            <span>@progress.CorrectAnswers correct</span>
-            <span>@progress.Attempts tries</span>
-            <span>@progress.Streak streak</span>
+            <span>@Localizer.Format("ScoreCorrect", progress.CorrectAnswers)</span>
+            <span>@Localizer.Format("ScoreTries", progress.Attempts)</span>
+            <span>@Localizer.Format("ScoreStreak", progress.Streak)</span>
         </div>
     </div>
 
@@ -35,7 +47,7 @@
                 <p class="prompt-label">@CurrentDrillTitle</p>
                 <h2>@PromptText</h2>
             </div>
-            <button class="next-button" type="button" @onclick="NextRound" aria-label="Next note">Next</button>
+            <button class="next-button" type="button" @onclick="NextRound" aria-label="@Localizer["NextNote"]">@Localizer["Next"]</button>
         </div>
 
         <MusicStaff DisplayedPitch="@DisplayedPitch"
@@ -59,8 +71,7 @@
                            OnPitchSelected="PreviewPitch" />
         }
 
-        <div class="@feedbackClass" aria-live="polite">@feedbackText</div>
+        <div class="@feedbackClass" aria-live="polite">@FeedbackText</div>
     </div>
 </section>
-
 
