@@ -1,19 +1,23 @@
 namespace MusicTeacher.Shared.MusicTheory;
 
-public readonly record struct Pitch(NoteLetter Letter, int Octave)
+public readonly record struct Pitch(NoteLetter Letter, int Octave, Accidental Accidental = Accidental.Natural)
 {
-    public string ScientificName => $"{Letter}{Octave}";
+    public string ScientificName => $"{Letter}{ScientificAccidental}{Octave}";
 
     public double FrequencyHz
     {
         get
         {
-            var midiNote = (Octave + 1) * 12 + SemitoneFromC;
+            var midiNote = (Octave + 1) * 12 + SemitoneFromC + (int)Accidental;
             return 440d * Math.Pow(2d, (midiNote - 69) / 12d);
         }
     }
 
-    public string FixedDoName => Letter switch
+    public string FixedDoName => $"{BaseFixedDoName}{DisplayAccidental}";
+
+    public string DisplayName => $"{Letter}{DisplayAccidental}{Octave}".ToLowerInvariant();
+
+    private string BaseFixedDoName => Letter switch
     {
         NoteLetter.C => "do",
         NoteLetter.D => "re",
@@ -23,6 +27,22 @@ public readonly record struct Pitch(NoteLetter Letter, int Octave)
         NoteLetter.A => "la",
         NoteLetter.B => "ti",
         _ => throw new ArgumentOutOfRangeException(nameof(Letter), Letter, null)
+    };
+
+    private string DisplayAccidental => Accidental switch
+    {
+        Accidental.Flat => "♭",
+        Accidental.Natural => string.Empty,
+        Accidental.Sharp => "♯",
+        _ => throw new ArgumentOutOfRangeException(nameof(Accidental), Accidental, null)
+    };
+
+    private string ScientificAccidental => Accidental switch
+    {
+        Accidental.Flat => "b",
+        Accidental.Natural => string.Empty,
+        Accidental.Sharp => "#",
+        _ => throw new ArgumentOutOfRangeException(nameof(Accidental), Accidental, null)
     };
 
     private int SemitoneFromC => Letter switch

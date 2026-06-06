@@ -16,10 +16,20 @@
         }
     </div>
 
-    <div class="black-key-row" aria-hidden="true">
-        @foreach (var keyIndex in BlackKeyAfterIndexes)
+    <div class="black-key-row">
+        @foreach (var key in BlackKeys)
         {
-            <span class="piano-black-key" style="@GetBlackKeyStyle(keyIndex)"></span>
+            <button type="button"
+                    class="@GetBlackKeyClass(key)"
+                    data-pitch="@key.SharpPitch.ScientificName"
+                    aria-label="@GetBlackKeyLabel(key)"
+                    style="@GetBlackKeyStyle(key.WhiteKeyIndex)"
+                    @onpointerenter="() => PreviewPitch(key.SharpPitch)"
+                    @onclick="() => SelectPitch(key.SharpPitch)">
+                <span>@key.SharpPitch.FixedDoName</span>
+                <span>@key.FlatPitch.FixedDoName</span>
+                <small>@key.SharpPitch.DisplayName / @key.FlatPitch.DisplayName</small>
+            </button>
         }
     </div>
 
@@ -35,20 +45,6 @@
 </div>
 
 @code {
-    private static readonly IReadOnlyList<int> BlackKeyAfterIndexes =
-    [
-        0,
-        1,
-        3,
-        4,
-        5,
-        7,
-        8,
-        10,
-        11,
-        12
-    ];
-
     [Parameter]
     public IReadOnlyList<Pitch> Pitches { get; set; } = [];
 
@@ -61,11 +57,28 @@
     [Parameter]
     public EventCallback<Pitch> OnPitchSelected { get; set; }
 
+    private IReadOnlyList<BlackPianoKey> BlackKeys => Pitches
+        .Select((pitch, index) => new { pitch, index })
+        .Where(item => HasBlackKeyAfter(item.pitch))
+        .Select(item => new BlackPianoKey(
+            item.index,
+            new Pitch(item.pitch.Letter, item.pitch.Octave, Accidental.Sharp),
+            GetFlatPitchAfter(item.pitch)))
+        .ToArray();
+
     private async Task PreviewPitch(Pitch pitch) => await OnPitchPreviewed.InvokeAsync(pitch);
 
     private async Task SelectPitch(Pitch pitch) => await OnPitchSelected.InvokeAsync(pitch);
 
     private static string GetPitchLabel(Pitch pitch) => $"{pitch.FixedDoName} {pitch.ScientificName}";
+
+    private string GetBlackKeyClass(BlackPianoKey key)
+        => HighlightedPitch == key.SharpPitch || HighlightedPitch == key.FlatPitch
+            ? "piano-black-key is-highlighted"
+            : "piano-black-key";
+
+    private static string GetBlackKeyLabel(BlackPianoKey key)
+        => $"{key.SharpPitch.FixedDoName} {key.SharpPitch.DisplayName}, {key.FlatPitch.FixedDoName} {key.FlatPitch.DisplayName}";
 
     private string GetBlackKeyStyle(int whiteKeyIndex)
     {
@@ -74,4 +87,20 @@
 
         return FormattableString.Invariant($"left: calc({left:0.###}% - var(--black-key-width) / 2);");
     }
+
+    private static bool HasBlackKeyAfter(Pitch pitch)
+        => pitch.Accidental == Accidental.Natural && pitch.Letter is NoteLetter.C or NoteLetter.D or NoteLetter.F or NoteLetter.G or NoteLetter.A;
+
+    private static Pitch GetFlatPitchAfter(Pitch pitch)
+        => pitch.Letter switch
+        {
+            NoteLetter.C => new Pitch(NoteLetter.D, pitch.Octave, Accidental.Flat),
+            NoteLetter.D => new Pitch(NoteLetter.E, pitch.Octave, Accidental.Flat),
+            NoteLetter.F => new Pitch(NoteLetter.G, pitch.Octave, Accidental.Flat),
+            NoteLetter.G => new Pitch(NoteLetter.A, pitch.Octave, Accidental.Flat),
+            NoteLetter.A => new Pitch(NoteLetter.B, pitch.Octave, Accidental.Flat),
+            _ => throw new ArgumentOutOfRangeException(nameof(pitch), pitch, null)
+        };
+
+    private sealed record BlackPianoKey(int WhiteKeyIndex, Pitch SharpPitch, Pitch FlatPitch);
 }
