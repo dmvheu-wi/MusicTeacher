@@ -247,12 +247,10 @@ h1:focus {
 }
 
 .treble-clef {
-    fill: none;
+    fill: var(--ink);
     pointer-events: none;
     stroke: var(--ink);
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 7;
+    stroke-width: 1.6;
 }
 
 .note-head {
