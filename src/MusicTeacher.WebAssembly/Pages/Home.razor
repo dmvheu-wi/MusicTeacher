@@ -128,7 +128,7 @@
 
     private async Task PreviewName(NoteLetter letter)
     {
-        await Audio.PlayNoteAsync(GetNearestAnswerPitch(letter));
+        await Audio.PlayNoteAsync(GetAnswerPreviewPitch(letter));
     }
 
     private async Task PreviewStaffStep(int step)
@@ -200,8 +200,8 @@
     private static string GetFixedDoName(NoteLetter letter)
         => new Pitch(letter, 4).FixedDoName;
 
-    private Pitch GetNearestAnswerPitch(NoteLetter letter)
-        => TrebleClef.GetNearestPitchWithLetter(letter, currentPitch);
+    private Pitch GetAnswerPreviewPitch(NoteLetter letter)
+        => TrebleClef.GetSolfegeButtonPreviewPitch(letter, currentPitch);
 
     private async Task PlayClickCue(bool isCorrect, Pitch pitch)
     {

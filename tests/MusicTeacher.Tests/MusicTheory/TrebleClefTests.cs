@@ -52,10 +52,11 @@ public sealed class TrebleClefTests
     }
 
     [Theory]
+    [InlineData(NoteLetter.B, NoteLetter.B, 4, NoteLetter.B, 4)]
+    [InlineData(NoteLetter.B, NoteLetter.C, 5, NoteLetter.B, 5)]
     [InlineData(NoteLetter.B, NoteLetter.A, 5, NoteLetter.B, 5)]
-    [InlineData(NoteLetter.B, NoteLetter.C, 5, NoteLetter.B, 4)]
-    [InlineData(NoteLetter.C, NoteLetter.B, 4, NoteLetter.C, 5)]
-    public void NearestPitchWithLetterKeepsPreviewInTheCurrentRegister(
+    [InlineData(NoteLetter.C, NoteLetter.A, 5, NoteLetter.C, 5)]
+    public void SolfegeButtonPreviewKeepsTheAnswerRowInOneRegister(
         NoteLetter requestedLetter,
         NoteLetter referenceLetter,
         int referenceOctave,
@@ -66,6 +67,6 @@ public sealed class TrebleClefTests
 
         Assert.Equal(
             new Pitch(expectedLetter, expectedOctave),
-            TrebleClef.GetNearestPitchWithLetter(requestedLetter, referencePitch));
+            TrebleClef.GetSolfegeButtonPreviewPitch(requestedLetter, referencePitch));
     }
 }
