@@ -6,6 +6,7 @@
 @inject IProgressStore ProgressStore
 @inject MusicAudioService Audio
 @inject AppLocalizer Localizer
+@inject IJSRuntime JS
 
 <PageTitle>@Localizer["AppTitle"]</PageTitle>
 
@@ -89,7 +90,12 @@ else
             @if (practiceMode == PracticeMode.LearningPath)
             {
                 <div class="level-card" aria-live="polite">
-                    <span>@Localizer.Format("LearningLevelLabel", CurrentLevelNumber)</span>
+                    <div class="level-card-header">
+                        <span>@Localizer.Format("LearningLevelLabel", CurrentLevelNumber)</span>
+                        <button class="reset-progress-button" type="button" @onclick="ResetProgress">
+                            @Localizer["ResetProgress"]
+                        </button>
+                    </div>
                     <strong>@CurrentDrillTitle</strong>
                     <small>@LearningGoalText</small>
                 </div>

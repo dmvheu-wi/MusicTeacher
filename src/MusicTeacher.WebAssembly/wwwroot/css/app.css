@@ -341,12 +341,37 @@ h1:focus {
     padding: 0.8rem;
 }
 
-.level-card span {
+.level-card-header {
+    align-items: center;
+    display: flex;
+    gap: 0.75rem;
+    justify-content: space-between;
+}
+
+.level-card-header span {
     color: var(--reed);
     font-size: 0.78rem;
     font-weight: 900;
     letter-spacing: 0.04rem;
     text-transform: uppercase;
+}
+
+.reset-progress-button {
+    background: #fff3ee;
+    border: 2px solid rgba(243, 111, 83, 0.5);
+    border-radius: 999px;
+    color: #9d311f;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 900;
+    padding: 0.3rem 0.55rem;
+}
+
+.reset-progress-button:hover,
+.reset-progress-button:focus-visible {
+    background: var(--coral);
+    border-color: var(--ink);
+    color: white;
 }
 
 .level-card strong {

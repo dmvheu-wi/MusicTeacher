@@ -292,6 +292,30 @@ public partial class Home
         await InvokeAsync(StateHasChanged);
     }
 
+    private async Task ResetProgress()
+    {
+        var confirmed = await JS.InvokeAsync<bool>("confirm", [Localizer["ResetProgressConfirm"]]);
+        if (!confirmed)
+        {
+            return;
+        }
+
+        progress = LearningProgress.Empty(progress.LessonId);
+        await ProgressStore.ResetAsync(progress.LessonId);
+
+        if (practiceMode == PracticeMode.LearningPath)
+        {
+            mode = GetRecommendedLearningMode();
+        }
+
+        previousPitch = null;
+        NextRound();
+        feedbackKey = "ProgressResetFeedback";
+        feedbackArgument = null;
+        feedbackClass = "feedback";
+        await PlayAssignmentNoteIfNeeded();
+    }
+
     private Dictionary<string, DrillLevelProgress> UpdateCurrentDrillProgress(bool isCorrect)
     {
         var drillProgress = GetDrillProgress();

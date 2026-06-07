@@ -7,4 +7,6 @@ public interface IProgressStore
     ValueTask<LearningProgress> LoadAsync(string lessonId);
 
     ValueTask SaveAsync(LearningProgress progress);
+
+    ValueTask ResetAsync(string lessonId);
 }

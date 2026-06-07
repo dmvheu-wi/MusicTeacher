@@ -78,6 +78,15 @@
   <data name="FinalLevelGoal" xml:space="preserve">
     <value>Laatste level ontgrendeld. Blijf je gehoor trainen.</value>
   </data>
+  <data name="ResetProgress" xml:space="preserve">
+    <value>Reset voortgang</value>
+  </data>
+  <data name="ResetProgressConfirm" xml:space="preserve">
+    <value>Leerpadvoortgang resetten? Hierdoor worden latere levels opnieuw vergrendeld tot de reeksdoelen gehaald zijn.</value>
+  </data>
+  <data name="ProgressResetFeedback" xml:space="preserve">
+    <value>Voortgang gereset. Start opnieuw vanaf level 1.</value>
+  </data>
   <data name="NameTheNoteTitle" xml:space="preserve">
     <value>Noem de noot</value>
   </data>

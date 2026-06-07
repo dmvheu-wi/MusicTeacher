@@ -78,6 +78,15 @@
   <data name="FinalLevelGoal" xml:space="preserve">
     <value>Final level unlocked. Keep training your ear.</value>
   </data>
+  <data name="ResetProgress" xml:space="preserve">
+    <value>Reset progress</value>
+  </data>
+  <data name="ResetProgressConfirm" xml:space="preserve">
+    <value>Reset learning progress? This locks later levels again until their streak goals are reached.</value>
+  </data>
+  <data name="ProgressResetFeedback" xml:space="preserve">
+    <value>Progress reset. Start again from level 1.</value>
+  </data>
   <data name="NameTheNoteTitle" xml:space="preserve">
     <value>Name the note</value>
   </data>

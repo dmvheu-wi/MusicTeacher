@@ -25,4 +25,9 @@ public sealed class BrowserProgressStore(IJSRuntime jsRuntime) : IProgressStore
         var json = JsonSerializer.Serialize(progress);
         await jsRuntime.InvokeVoidAsync("localStorage.setItem", StorageKeyPrefix + progress.LessonId, json);
     }
+
+    public async ValueTask ResetAsync(string lessonId)
+    {
+        await jsRuntime.InvokeVoidAsync("localStorage.removeItem", StorageKeyPrefix + lessonId);
+    }
 }
