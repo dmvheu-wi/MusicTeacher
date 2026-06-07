@@ -1,24 +1,58 @@
 # MusicTeacher
 
-MusicTeacher is a Blazor WebAssembly PWA for children learning to read music from scratch.
+MusicTeacher is a standalone .NET 10 Blazor WebAssembly PWA for children learning to read music from scratch.
 
-The first version starts with treble-clef drills:
+The current v1 focuses on treble-clef note reading with fixed-do names (`do`, `re`, `mi`, `fa`, `sol`, `la`, `ti`) across a beginner two-octave range from `C4` to `B5`.
 
-- name a note shown on the staff with fixed-do syllables
-- place a named note on the correct staff line or space
-- keep local progress in browser storage
-- load lesson metadata from local JSON content
+## Current Features
+
+- Start screen with English and Dutch language selection.
+- Free explore mode where every drill is available immediately.
+- Learning path mode where drills unlock through per-level streak goals.
+- Reset progress action with confirmation, because resetting locks later learning-path levels again.
+- Local lesson metadata loaded from JSON in `wwwroot/content/lessons`.
+- Local progress storage in browser `localStorage`; no backend or account system yet.
+- SVG treble staff with ledger lines for notes below and above the staff.
+- SVG two-octave piano keyboard with white keys and black keys.
+- Soft note playback on hover/click and buzzer feedback for incorrect answers.
+- Resource-file based localization with WebAssembly globalization data enabled.
+
+## Drill Modes
+
+- `Name`: read the note shown on the staff and choose it on the keyboard.
+- `Place`: read the requested note name and place it on the staff.
+- `Hear: play`: listen to a note and play it on the keyboard.
+- `Hear: place`: listen to a note and place it on the staff.
+
+The accidental selector is already present in placement drills, but sharps and flats are still disabled for the current beginner level.
+
+## Learning Path
+
+Learning mode uses independent streaks per drill, so practicing one level does not accidentally unlock another.
+
+- Level 1: `Name`, streak of 5 unlocks `Place`.
+- Level 2: `Place`, streak of 10 unlocks `Hear: play`.
+- Level 3: `Hear: play`, streak of 5 unlocks `Hear: place`.
+- Level 4: `Hear: place`, final current level.
 
 ## Project Structure
 
-- `src/MusicTeacher.WebAssembly` - standalone .NET 10 Blazor WebAssembly PWA
-- `src/MusicTeacher.Shared` - pure C# music-theory and lesson/progress models
-- `tests/MusicTeacher.Tests` - xUnit unit tests plus opt-in Playwright E2E tests
+- `src/MusicTeacher.WebAssembly` - standalone Blazor WebAssembly PWA, UI, services, localization, audio, local storage.
+- `src/MusicTeacher.Shared` - pure C# music-theory, lesson, and progress models.
+- `tests/MusicTeacher.Tests` - xUnit unit tests plus opt-in Playwright end-to-end tests.
 
-## Run
+## Run Locally
 
 ```powershell
-dotnet run --project src\MusicTeacher.WebAssembly\MusicTeacher.WebAssembly.csproj
+dotnet run --project src\MusicTeacher.WebAssembly\MusicTeacher.WebAssembly.csproj --urls http://127.0.0.1:5173
+```
+
+Then open `http://127.0.0.1:5173/`.
+
+## Build
+
+```powershell
+dotnet build MusicTeacher.slnx --artifacts-path .artifacts
 ```
 
 ## Test
@@ -35,3 +69,7 @@ pwsh .artifacts\bin\MusicTeacher.Tests\debug\playwright.ps1 install chromium
 $env:MUSIC_TEACHER_RUN_E2E = "true"
 dotnet test MusicTeacher.slnx --artifacts-path .artifacts
 ```
+
+## Current Direction
+
+The project intentionally stays frontend-only for v1. Add a backend only when accounts, cloud sync, teacher dashboards, or shared classroom progress become necessary.
