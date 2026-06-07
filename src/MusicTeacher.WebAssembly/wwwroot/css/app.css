@@ -176,6 +176,34 @@ h1:focus {
     color: var(--ink);
 }
 
+.practice-mode-switch {
+    background: rgba(255, 255, 255, 0.78);
+    border: 2px solid rgba(23, 33, 43, 0.2);
+    border-radius: 999px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 1rem;
+    overflow: hidden;
+}
+
+.practice-mode-button {
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    font-weight: 900;
+    min-height: 2.6rem;
+    padding: 0 0.7rem;
+}
+
+.practice-mode-button + .practice-mode-button {
+    border-left: 2px solid rgba(23, 33, 43, 0.2);
+}
+
+.practice-mode-button.is-active {
+    background: var(--ink);
+    color: white;
+}
+
 .mode-switch {
     background: white;
     border: 2px solid var(--ink);
@@ -192,14 +220,53 @@ h1:focus {
     cursor: pointer;
     font-weight: 900;
     min-height: 3.15rem;
+    padding: 0 0.4rem;
 }
 
-.mode-button + .mode-button {
+.mode-button:nth-child(even) {
     border-left: 2px solid var(--ink);
+}
+
+.mode-button:nth-child(n + 3) {
+    border-top: 2px solid var(--ink);
 }
 
 .mode-button.is-active {
     background: var(--sun);
+}
+
+.mode-button.is-locked {
+    background: #edf0f0;
+    color: rgba(23, 33, 43, 0.4);
+    cursor: not-allowed;
+}
+
+.level-card {
+    background: #fffefa;
+    border: 2px solid rgba(23, 33, 43, 0.18);
+    border-radius: 8px;
+    display: grid;
+    gap: 0.25rem;
+    margin-top: 1rem;
+    padding: 0.8rem;
+}
+
+.level-card span {
+    color: var(--reed);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.04rem;
+    text-transform: uppercase;
+}
+
+.level-card strong {
+    font-size: 1.05rem;
+}
+
+.level-card small {
+    color: rgba(23, 33, 43, 0.68);
+    font-weight: 800;
+    line-height: 1.25;
 }
 
 .score-strip {
@@ -241,6 +308,30 @@ h1:focus {
     font-size: clamp(1.4rem, 4vw, 2.25rem);
     font-weight: 900;
     line-height: 1.05;
+}
+
+.prompt-actions {
+    align-items: stretch;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: end;
+}
+
+.listen-button {
+    background: #d9f6df;
+    border: 2px solid var(--ink);
+    border-radius: 8px;
+    color: var(--ink);
+    cursor: pointer;
+    font-weight: 900;
+    min-height: 3rem;
+    padding: 0 1rem;
+}
+
+.listen-button:hover,
+.listen-button:focus-visible {
+    background: #b8efc2;
 }
 
 .accidental-selector {

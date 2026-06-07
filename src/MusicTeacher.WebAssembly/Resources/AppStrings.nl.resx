@@ -24,11 +24,26 @@
   <data name="DrillModeLabel" xml:space="preserve">
     <value>Oefenmodus</value>
   </data>
+  <data name="PracticeModeLabel" xml:space="preserve">
+    <value>Manier van oefenen</value>
+  </data>
+  <data name="FreeExploreMode" xml:space="preserve">
+    <value>Vrij oefenen</value>
+  </data>
+  <data name="LearningMode" xml:space="preserve">
+    <value>Leerpad</value>
+  </data>
   <data name="NameMode" xml:space="preserve">
     <value>Noem</value>
   </data>
   <data name="PlaceMode" xml:space="preserve">
     <value>Plaats</value>
+  </data>
+  <data name="HearPlayMode" xml:space="preserve">
+    <value>Hoor: speel</value>
+  </data>
+  <data name="HearPlaceMode" xml:space="preserve">
+    <value>Hoor: plaats</value>
   </data>
   <data name="ScoreCorrect" xml:space="preserve">
     <value>{0} goed</value>
@@ -39,17 +54,41 @@
   <data name="ScoreStreak" xml:space="preserve">
     <value>{0} reeks</value>
   </data>
+  <data name="LearningLevelLabel" xml:space="preserve">
+    <value>Level {0}</value>
+  </data>
+  <data name="LearningGoal" xml:space="preserve">
+    <value>Beste reeks {0}/{1}. Haal het doel om {2} te ontgrendelen.</value>
+  </data>
+  <data name="FinalLevelGoal" xml:space="preserve">
+    <value>Laatste level ontgrendeld. Blijf je gehoor trainen.</value>
+  </data>
   <data name="NameTheNoteTitle" xml:space="preserve">
     <value>Noem de noot</value>
   </data>
   <data name="PlaceTheNoteTitle" xml:space="preserve">
     <value>Plaats de noot</value>
   </data>
+  <data name="HearPlayTitle" xml:space="preserve">
+    <value>Hoor de noot: speel ze</value>
+  </data>
+  <data name="HearPlaceTitle" xml:space="preserve">
+    <value>Hoor de noot: plaats ze</value>
+  </data>
   <data name="NamePrompt" xml:space="preserve">
     <value>Welke naam past bij deze noot?</value>
   </data>
   <data name="PlacePrompt" xml:space="preserve">
     <value>Zet {0} op de notenbalk</value>
+  </data>
+  <data name="HearPlayPrompt" xml:space="preserve">
+    <value>Luister en speel de noot op het klavier.</value>
+  </data>
+  <data name="HearPlacePrompt" xml:space="preserve">
+    <value>Luister en plaats de noot op de notenbalk.</value>
+  </data>
+  <data name="PlayAssignmentNote" xml:space="preserve">
+    <value>Speel noot</value>
   </data>
   <data name="NextNote" xml:space="preserve">
     <value>Volgende noot</value>
@@ -63,6 +102,9 @@
   <data name="CorrectFeedback" xml:space="preserve">
     <value>Dat klopt.</value>
   </data>
+  <data name="LevelUnlockedFeedback" xml:space="preserve">
+    <value>Level ontgrendeld: {0}.</value>
+  </data>
   <data name="MissedFeedback" xml:space="preserve">
     <value>Probeer de volgende.</value>
   </data>
@@ -71,6 +113,12 @@
   </data>
   <data name="PickStaffFeedback" xml:space="preserve">
     <value>Kies een lijn of ruimte.</value>
+  </data>
+  <data name="PickHeardKeyFeedback" xml:space="preserve">
+    <value>Speel wat je hoort.</value>
+  </data>
+  <data name="PickHeardStaffFeedback" xml:space="preserve">
+    <value>Plaats wat je hoort.</value>
   </data>
   <data name="LowOctave" xml:space="preserve">
     <value>laag</value>

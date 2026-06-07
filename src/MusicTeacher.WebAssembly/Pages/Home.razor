@@ -25,19 +25,59 @@
             }
         </div>
 
-        <div class="mode-switch" role="tablist" aria-label="@Localizer["DrillModeLabel"]">
-            <button class="@GetModeClass(DrillMode.NameNote)" type="button" @onclick="() => SetMode(DrillMode.NameNote)">
-                @Localizer["NameMode"]
+        <div class="practice-mode-switch" role="group" aria-label="@Localizer["PracticeModeLabel"]">
+            <button class="@GetPracticeModeClass(PracticeMode.FreeExplore)"
+                    type="button"
+                    @onclick="() => SetPracticeMode(PracticeMode.FreeExplore)">
+                @Localizer["FreeExploreMode"]
             </button>
-            <button class="@GetModeClass(DrillMode.PlaceNote)" type="button" @onclick="() => SetMode(DrillMode.PlaceNote)">
-                @Localizer["PlaceMode"]
+            <button class="@GetPracticeModeClass(PracticeMode.LearningPath)"
+                    type="button"
+                    @onclick="() => SetPracticeMode(PracticeMode.LearningPath)">
+                @Localizer["LearningMode"]
             </button>
         </div>
 
+        <div class="mode-switch" role="tablist" aria-label="@Localizer["DrillModeLabel"]">
+            <button class="@GetModeClass(DrillMode.NameNote)"
+                    type="button"
+                    disabled="@IsModeLocked(DrillMode.NameNote)"
+                    @onclick="() => SetMode(DrillMode.NameNote)">
+                @Localizer["NameMode"]
+            </button>
+            <button class="@GetModeClass(DrillMode.PlaceNote)"
+                    type="button"
+                    disabled="@IsModeLocked(DrillMode.PlaceNote)"
+                    @onclick="() => SetMode(DrillMode.PlaceNote)">
+                @Localizer["PlaceMode"]
+            </button>
+            <button class="@GetModeClass(DrillMode.HearNotePlay)"
+                    type="button"
+                    disabled="@IsModeLocked(DrillMode.HearNotePlay)"
+                    @onclick="() => SetMode(DrillMode.HearNotePlay)">
+                @Localizer["HearPlayMode"]
+            </button>
+            <button class="@GetModeClass(DrillMode.HearNotePlace)"
+                    type="button"
+                    disabled="@IsModeLocked(DrillMode.HearNotePlace)"
+                    @onclick="() => SetMode(DrillMode.HearNotePlace)">
+                @Localizer["HearPlaceMode"]
+            </button>
+        </div>
+
+        @if (practiceMode == PracticeMode.LearningPath)
+        {
+            <div class="level-card" aria-live="polite">
+                <span>@Localizer.Format("LearningLevelLabel", CurrentLevelNumber)</span>
+                <strong>@CurrentDrillTitle</strong>
+                <small>@LearningGoalText</small>
+            </div>
+        }
+
         <div class="score-strip" aria-live="polite">
-            <span>@Localizer.Format("ScoreCorrect", progress.CorrectAnswers)</span>
-            <span>@Localizer.Format("ScoreTries", progress.Attempts)</span>
-            <span>@Localizer.Format("ScoreStreak", progress.Streak)</span>
+            <span>@Localizer.Format("ScoreCorrect", DisplayCorrectAnswers)</span>
+            <span>@Localizer.Format("ScoreTries", DisplayAttempts)</span>
+            <span>@Localizer.Format("ScoreStreak", DisplayStreak)</span>
         </div>
     </div>
 
@@ -47,17 +87,28 @@
                 <p class="prompt-label">@CurrentDrillTitle</p>
                 <h2>@PromptText</h2>
             </div>
-            <button class="next-button" type="button" @onclick="NextRound" aria-label="@Localizer["NextNote"]">@Localizer["Next"]</button>
+            <div class="prompt-actions">
+                @if (IsHearingMode)
+                {
+                    <button class="listen-button" type="button" @onclick="PlayAssignmentNote" aria-label="@Localizer["PlayAssignmentNote"]">
+                        @Localizer["PlayAssignmentNote"]
+                    </button>
+                }
+                <button class="next-button" type="button" @onclick="AdvanceRound" aria-label="@Localizer["NextNote"]">@Localizer["Next"]</button>
+            </div>
         </div>
 
-        <MusicStaff DisplayedPitch="@DisplayedPitch"
-                    IsPlacementMode="@IsPlacementMode"
-                    SelectableSteps="@selectableSteps"
-                    SelectedStep="@selectedStep"
-                    OnStepPreviewed="PreviewStaffStep"
-                    OnStepSelected="SelectStaffStep" />
+        @if (ShowsStaff)
+        {
+            <MusicStaff DisplayedPitch="@DisplayedPitch"
+                        IsPlacementMode="@IsPlacementMode"
+                        SelectableSteps="@selectableSteps"
+                        SelectedStep="@selectedStep"
+                        OnStepPreviewed="PreviewStaffStep"
+                        OnStepSelected="SelectStaffStep" />
+        }
 
-        @if (mode == DrillMode.PlaceNote)
+        @if (ShowsAccidentalSelector)
         {
             <div class="accidental-selector" role="group" aria-label="@Localizer["AccidentalSelectorLabel"]">
                 <span>@Localizer["AccidentalSelectorLabel"]</span>
@@ -68,18 +119,12 @@
             </div>
         }
 
-        @if (mode == DrillMode.NameNote)
+        @if (ShowsKeyboard)
         {
-            <PianoKeyboard Pitches="@TrebleClef.BeginnerReadingNotes"
+            <PianoKeyboard Pitches="@CurrentNotes"
+                           HighlightedPitch="@KeyboardHighlightedPitch"
                            OnPitchPreviewed="PreviewPitch"
-                           OnPitchSelected="ChoosePitch" />
-        }
-        else
-        {
-            <PianoKeyboard Pitches="@TrebleClef.BeginnerPlacementNotes"
-                           HighlightedPitch="@currentPitch"
-                           OnPitchPreviewed="PreviewPitch"
-                           OnPitchSelected="PreviewPitch" />
+                           OnPitchSelected="SelectKeyboardPitch" />
         }
 
         <div class="@feedbackClass" aria-live="polite">@FeedbackText</div>

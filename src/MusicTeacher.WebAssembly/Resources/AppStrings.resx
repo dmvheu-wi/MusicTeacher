@@ -24,11 +24,26 @@
   <data name="DrillModeLabel" xml:space="preserve">
     <value>Drill mode</value>
   </data>
+  <data name="PracticeModeLabel" xml:space="preserve">
+    <value>Practice mode</value>
+  </data>
+  <data name="FreeExploreMode" xml:space="preserve">
+    <value>Free explore</value>
+  </data>
+  <data name="LearningMode" xml:space="preserve">
+    <value>Learning path</value>
+  </data>
   <data name="NameMode" xml:space="preserve">
     <value>Name</value>
   </data>
   <data name="PlaceMode" xml:space="preserve">
     <value>Place</value>
+  </data>
+  <data name="HearPlayMode" xml:space="preserve">
+    <value>Hear: play</value>
+  </data>
+  <data name="HearPlaceMode" xml:space="preserve">
+    <value>Hear: place</value>
   </data>
   <data name="ScoreCorrect" xml:space="preserve">
     <value>{0} correct</value>
@@ -39,17 +54,41 @@
   <data name="ScoreStreak" xml:space="preserve">
     <value>{0} streak</value>
   </data>
+  <data name="LearningLevelLabel" xml:space="preserve">
+    <value>Level {0}</value>
+  </data>
+  <data name="LearningGoal" xml:space="preserve">
+    <value>Best streak {0}/{1}. Reach the goal to unlock {2}.</value>
+  </data>
+  <data name="FinalLevelGoal" xml:space="preserve">
+    <value>Final level unlocked. Keep training your ear.</value>
+  </data>
   <data name="NameTheNoteTitle" xml:space="preserve">
     <value>Name the note</value>
   </data>
   <data name="PlaceTheNoteTitle" xml:space="preserve">
     <value>Place the note</value>
   </data>
+  <data name="HearPlayTitle" xml:space="preserve">
+    <value>Hear the note: play it</value>
+  </data>
+  <data name="HearPlaceTitle" xml:space="preserve">
+    <value>Hear the note: place it</value>
+  </data>
   <data name="NamePrompt" xml:space="preserve">
     <value>Which name matches this note?</value>
   </data>
   <data name="PlacePrompt" xml:space="preserve">
     <value>Put {0} on the staff</value>
+  </data>
+  <data name="HearPlayPrompt" xml:space="preserve">
+    <value>Listen, then play the note on the keyboard.</value>
+  </data>
+  <data name="HearPlacePrompt" xml:space="preserve">
+    <value>Listen, then place the note on the staff.</value>
+  </data>
+  <data name="PlayAssignmentNote" xml:space="preserve">
+    <value>Play note</value>
   </data>
   <data name="NextNote" xml:space="preserve">
     <value>Next note</value>
@@ -63,6 +102,9 @@
   <data name="CorrectFeedback" xml:space="preserve">
     <value>That fits.</value>
   </data>
+  <data name="LevelUnlockedFeedback" xml:space="preserve">
+    <value>Level unlocked: {0}.</value>
+  </data>
   <data name="MissedFeedback" xml:space="preserve">
     <value>Try the next one.</value>
   </data>
@@ -71,6 +113,12 @@
   </data>
   <data name="PickStaffFeedback" xml:space="preserve">
     <value>Pick a line or space.</value>
+  </data>
+  <data name="PickHeardKeyFeedback" xml:space="preserve">
+    <value>Play what you hear.</value>
+  </data>
+  <data name="PickHeardStaffFeedback" xml:space="preserve">
+    <value>Place what you hear.</value>
   </data>
   <data name="LowOctave" xml:space="preserve">
     <value>low</value>
