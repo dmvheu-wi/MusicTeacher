@@ -21,6 +21,12 @@
   <data name="TrebleClefStartTitle" xml:space="preserve">
     <value>Start met de sleutel van sol</value>
   </data>
+  <data name="StartScreenTitle" xml:space="preserve">
+    <value>Hoe wil je oefenen?</value>
+  </data>
+  <data name="StartScreenIntro" xml:space="preserve">
+    <value>Kies een taal en start met vrij oefenen of een begeleid leerpad.</value>
+  </data>
   <data name="DrillModeLabel" xml:space="preserve">
     <value>Oefenmodus</value>
   </data>
@@ -30,8 +36,17 @@
   <data name="FreeExploreMode" xml:space="preserve">
     <value>Vrij oefenen</value>
   </data>
+  <data name="FreeExploreDescription" xml:space="preserve">
+    <value>Spring tussen alle nootspelletjes en probeer vrij uit.</value>
+  </data>
   <data name="LearningMode" xml:space="preserve">
     <value>Leerpad</value>
+  </data>
+  <data name="LearningModeDescription" xml:space="preserve">
+    <value>Ontgrendel levels stap voor stap met reeksdoelen.</value>
+  </data>
+  <data name="BackToStart" xml:space="preserve">
+    <value>Wijzig modus</value>
   </data>
   <data name="NameMode" xml:space="preserve">
     <value>Noem</value>

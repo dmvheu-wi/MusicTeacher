@@ -23,6 +23,7 @@ public partial class Home
     private LearningProgress progress = LearningProgress.Empty("treble-clef-start");
     private PracticeMode practiceMode = PracticeMode.FreeExplore;
     private DrillMode mode = DrillMode.NameNote;
+    private bool hasStarted;
     private Pitch currentPitch = TrebleClef.BeginnerReadingNotes[0];
     private int? selectedStep;
     private string feedbackKey = "Ready";
@@ -115,6 +116,17 @@ public partial class Home
         previousPitch = null;
         NextRound();
         await PlayAssignmentNoteIfNeeded();
+    }
+
+    private async Task StartPractice(PracticeMode selectedPracticeMode)
+    {
+        hasStarted = true;
+        await SetPracticeMode(selectedPracticeMode);
+    }
+
+    private void ReturnToStart()
+    {
+        hasStarted = false;
     }
 
     private async Task SetMode(DrillMode nextMode)
@@ -277,6 +289,7 @@ public partial class Home
     private async Task ChangeCulture(string cultureName)
     {
         await Localizer.SetCultureAsync(cultureName);
+        await InvokeAsync(StateHasChanged);
     }
 
     private Dictionary<string, DrillLevelProgress> UpdateCurrentDrillProgress(bool isCorrect)
